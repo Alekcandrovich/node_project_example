@@ -1,12 +1,12 @@
-const contacts = require("./db");
+const contacts = require("./contacts.js");
 const { program } = require("commander");
 
 program
-  .option("-a, --action <type>", "choose action")
-  .option("-i, --id <type>", "user id")
-  .option("-n, --name <type>", "user name")
-  .option("-e, --email <type>", "user email")
-  .option("-p, --phone <type>", "user phone");
+  .option("-a, --action <type>", "выберите действие")
+  .option("-i, --id <type>", "идентификатор пользователя")
+  .option("-n, --name <type>", "имя пользователя")
+  .option("-e, --email <type>", "электронная почта пользователя")
+  .option("-p, --phone <type>", "телефон пользователя");
 
 program.parse();
 
@@ -18,13 +18,13 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       const allContacts = await contacts.listContacts();
       return console.log(allContacts);
     case "get":
-      const contactById = await contacts.getaddContact();
+      const contactById = await contacts.getContactById(id);
       return console.log(contactById);
     case "add":
       const newContact = await contacts.addContact({
         name,
         email,
-        phone
+        phone,
       });
       return console.log(newContact);
     case "update":
@@ -34,12 +34,12 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
         phone,
       });
       return console.log(updateContact);
-    case 'remove':
+    case "remove":
       const deleteContact = await contacts.removeContact(id);
-      return console.log(deleteeContact);
+      return console.log(deleteContact);
     default:
-      console.warn('\x1B[31m Unknown action type!');
+      console.warn("\x1B[31m Неизвестный тип действия!");
   }
-}
+};
 
 invokeAction(argv);
